@@ -3,12 +3,13 @@ import { getAuth, Auth } from "firebase/auth";
 import { getFirestore, Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCMyBlpAR6b7tEiRG6BOfmTRNSJ1PvaHkI",
-  authDomain: "deadlineai-b31b9.firebaseapp.com",
-  projectId: "deadlineai-b31b9",
-  storageBucket: "deadlineai-b31b9.firebasestorage.app",
-  messagingSenderId: "61649394797",
-  appId: "1:61649394797:web:cc76531d04a0e89fca7364"
+  apiKey: "AIzaSyAIciR901VZC6qf-VsJL1CgztOy0Obw1nU",
+  authDomain: "ishan-proj.firebaseapp.com",
+  projectId: "ishan-proj",
+  storageBucket: "ishan-proj.firebasestorage.app",
+  messagingSenderId: "1070639790876",
+  appId: "1:1070639790876:web:c5f5f711bf6adcfe9458d9",
+  measurementId: "G-KNR67VSRZ0"
 };
 
 // Always configured with hardcoded keys

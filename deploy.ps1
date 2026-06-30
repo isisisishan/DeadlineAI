@@ -1,5 +1,5 @@
 # Google Cloud Run Deployment Script
-$ProjectID = "deadlineai-b31b9"
+$ProjectID = "ishan-proj"
 $Region = "us-central1"
 $ServiceName = "momentum-ai"
 

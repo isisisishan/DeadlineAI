@@ -1,4 +1,4 @@
-import { db, isFirebaseConfigured } from "./firebase";
+import { db, isFirebaseConfigured, auth } from "./firebase";
 import { 
   collection, 
   doc, 
@@ -110,7 +110,7 @@ const setLocal = <T>(key: string, value: T): void => {
 export const dbService = {
   // --- USER PROFILE & ONBOARDING ---
   async saveProfile(profile: UserProfile): Promise<void> {
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       const userRef = doc(db, "users", profile.uid);
       await setDoc(userRef, profile, { merge: true });
     } else {
@@ -119,7 +119,7 @@ export const dbService = {
   },
 
   async getProfile(uid: string): Promise<UserProfile | null> {
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       const userRef = doc(db, "users", uid);
       const snap = await getDoc(userRef);
       return snap.exists() ? (snap.data() as UserProfile) : null;
@@ -132,7 +132,7 @@ export const dbService = {
 
   // --- TASKS ---
   async getTasks(userId: string): Promise<Task[]> {
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       const q = query(collection(db, "tasks"), where("userId", "==", userId));
       const snap = await getDocs(q);
       const list: Task[] = [];
@@ -147,7 +147,7 @@ export const dbService = {
   },
 
   async saveTask(task: Task): Promise<void> {
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       const docRef = doc(db, "tasks", task.id);
       await setDoc(docRef, task);
     } else {
@@ -163,7 +163,7 @@ export const dbService = {
   },
 
   async saveTasksBulk(tasks: Task[]): Promise<void> {
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       for (const task of tasks) {
         const docRef = doc(db, "tasks", task.id);
         await setDoc(docRef, task);
@@ -184,7 +184,7 @@ export const dbService = {
   },
 
   async deleteTask(taskId: string): Promise<void> {
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       const docRef = doc(db, "tasks", taskId);
       await deleteDoc(docRef);
     } else {
@@ -197,7 +197,7 @@ export const dbService = {
   // --- DAILY SCHEDULES ---
   async getSchedule(userId: string, date: string): Promise<DailySchedule | null> {
     const id = `${userId}_${date}`;
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       const docRef = doc(db, "schedules", id);
       const snap = await getDoc(docRef);
       return snap.exists() ? (snap.data() as DailySchedule) : null;
@@ -210,7 +210,7 @@ export const dbService = {
 
   async saveSchedule(schedule: DailySchedule): Promise<void> {
     const id = `${schedule.userId}_${schedule.date}`;
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       const docRef = doc(db, "schedules", id);
       await setDoc(docRef, schedule);
     } else {
@@ -229,7 +229,7 @@ export const dbService = {
 
   // --- CHAT HISTORY ---
   async getChatHistory(userId: string): Promise<ChatMessage[]> {
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       const docRef = doc(db, "chatHistory", userId);
       const snap = await getDoc(docRef);
       return snap.exists() ? (snap.data().messages as ChatMessage[]) : [];
@@ -240,7 +240,7 @@ export const dbService = {
   },
 
   async saveChatHistory(userId: string, messages: ChatMessage[]): Promise<void> {
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       const docRef = doc(db, "chatHistory", userId);
       await setDoc(docRef, { messages });
     } else {
@@ -251,7 +251,7 @@ export const dbService = {
   },
 
   async clearChatHistory(userId: string): Promise<void> {
-    if (isFirebaseConfigured && db) {
+    if (isFirebaseConfigured && db && auth?.currentUser) {
       const docRef = doc(db, "chatHistory", userId);
       await setDoc(docRef, { messages: [] });
     } else {
